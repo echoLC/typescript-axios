@@ -32,7 +32,7 @@ export default function xhr (config: AxiosRequestConfig): AxiosPromise {
 
       resolve(response)
     }
-  
+
     Object.keys(headers).forEach(name => {
       if (data === null && name.toLowerCase() === 'content-type') {
         delete headers[name]

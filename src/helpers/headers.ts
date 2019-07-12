@@ -16,8 +16,10 @@ function normalizeHeaderName (headers: any, normalizeName: string): any {
 export function processHeaders (headers: any, data: any): any {
   normalizeHeaderName(headers, 'Content-Type')
 
+  const headersContentType = headers['Content-Type']
+
   if (isPlainObject(data)) {
-    if (headers && !headers['Content-Type']) {
+    if (headers && !headersContentType) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }
