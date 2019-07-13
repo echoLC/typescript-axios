@@ -1,6 +1,3 @@
-import { timeouts } from "retry";
-import { request } from "https";
-
 export type Method = 'get' 
   | 'GET'
   | 'delete'
