@@ -8,27 +8,27 @@ axios({
   }
 })
 
-axios.request({
-  url: '/extend/post',
-  method: 'post',
-  data: {
-    msg: 'hello'
-  }
-})
+// axios.request({
+//   url: '/extend/post',
+//   method: 'post',
+//   data: {
+//     msg: 'hello'
+//   }
+// })
 
-axios.get('/extend/get')
+// axios.get('/extend/get')
 
-axios.options('/extend/options')
+// axios.options('/extend/options')
 
-axios.delete('/extend/delete')
+// axios.delete('/extend/delete')
 
-axios.head('/extend/head')
+// axios.head('/extend/head')
 
-axios.post('/extend/post', { msg: 'post' })
+// axios.post('/extend/post', { msg: 'post' })
 
-axios.put('/extend/put', { msg: 'put' })
+// axios.put('/extend/put', { msg: 'put' })
 
-axios.patch('/extend/patch', { msg: 'patch' })
+// axios.patch('/extend/patch', { msg: 'patch' })
 
 axios({
   url: '/extend/post',
@@ -38,12 +38,12 @@ axios({
   }
 })
 
-// axios('/extend/post', {
-//   method: 'post',
-//   data: {
-//     msg: 'hello'
-//   }
-// })
+axios('/extend/post', {
+  method: 'post',
+  data: {
+    msg: 'hello'
+  }
+})
 
 // interface ResponseData<T = any> {
 //   code: number
