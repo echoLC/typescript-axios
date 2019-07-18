@@ -1,6 +1,3 @@
-import CancelToken from "../cancel/CancelToken";
-import Cancel, { isCancel } from "../cancel/Cancel";
-
 export type Method = 'get' 
   | 'GET'
   | 'delete'
