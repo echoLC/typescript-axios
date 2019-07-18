@@ -50,6 +50,8 @@ export interface Axios {
     request: AxiosInterceptorManager<AxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse>
   }
+  tranformRequest: AxiosTransformer | AxiosTransformer[]
+  transformResponse: AxiosTransformer | AxiosTransformer[]
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -77,4 +79,8 @@ export interface ResolvedFn<T> {
 
 export interface RejectFn {
   (error: any): any
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
