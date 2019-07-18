@@ -53,6 +53,13 @@ export default function xhr (config: AxiosRequestConfig): AxiosPromise {
       }
       request.setRequestHeader(name, headers[name])
     })
+
+    if (config.cancelToken) {
+      config.cancelToken.promise.then(reason => {
+        request.abort()
+        reject(reason)
+      })
+    }
   
     request.send(data)
 
