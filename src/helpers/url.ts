@@ -1,4 +1,12 @@
-import { isPlainObject, isDate } from './utils'
+import {
+  isPlainObject,
+  isDate
+} from './utils'
+
+interface URLOrigin {
+  protocol: string
+  host: string
+}
 
 function encode (val: string): string {
   return encodeURIComponent(val)
@@ -52,10 +60,32 @@ export function buildURL (url: string, params: any): string {
       url = url.slice(0, markIndex)
     }
 
-    const operator = (url.indexOf('?') !== -1) ? '&' : '?' 
+    const operator = (url.indexOf('?') !== -1) ? '&' : '?'
 
-    url += `${operator}${serializeParam}` 
+    url += `${operator}${serializeParam}`
   }
 
   return url
+}
+
+const urlParsingNode = document.createElement('a')
+const currentOrigin = resolveURL(window.location.href)
+
+export function isURLSameOrigin (requestUrl: string): boolean {
+  const requestOrigin = resolveURL(requestUrl)
+  return requestOrigin.protocol === currentOrigin.protocol && requestOrigin.host === currentOrigin
+    .host
+}
+
+function resolveURL (url: string): URLOrigin {
+  urlParsingNode.setAttribute('href', url)
+
+  const {
+    protocol,
+    host
+  } = urlParsingNode
+  return {
+    protocol,
+    host
+  }
 }

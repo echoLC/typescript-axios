@@ -7,6 +7,10 @@ const defaults: AxiosRequestConfig = {
 
   timeout: 0,
 
+  xsrfCookieName: 'XSRF-TOKEN',
+  
+  xsfrHeaderName: 'X-XSRF-TOKEN',
+
   headers: {
     common: {
       Accept: 'application/json, text/plain, */*'
