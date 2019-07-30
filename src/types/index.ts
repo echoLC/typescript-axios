@@ -22,6 +22,7 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   timeout?: number
   cancelToken?: CancelToken
+  withCredentials?: boolean
 
   [propName: string]: any
 }
