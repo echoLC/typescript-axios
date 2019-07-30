@@ -4,6 +4,9 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
+const cookieParser = require('cookie-parser')
+
+require('./server2')
 
 const app = express()
 const compiler = webpack(WebpackConfig)
@@ -24,6 +27,8 @@ app.use(bodyParser.json())
 // app.use(bodyParser.text())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(cookieParser())
+
 const router = express.Router()
 
 registerSimpleRouter()
@@ -40,9 +45,11 @@ registerConfigRouter()
 
 registerCancelRouter()
 
+registerMoreRouter()
+
 app.use(router)
 
-const port = process.env.PORT || 9000
+const port = process.env.PORT || 7000
 module.exports = app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}, Ctrl+C to stop`)
 })
@@ -165,6 +172,12 @@ function registerCancelRouter() {
     setTimeout(() => {
       res.json(req.body)
     }, 1000)
+  })
+}
+
+function registerMoreRouter () {
+  router.get('/more/get', function(req, res) {
+    res.json(req.cookies)
   })
 }
 
