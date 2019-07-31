@@ -9,7 +9,7 @@ const defaults: AxiosRequestConfig = {
 
   xsrfCookieName: 'XSRF-TOKEN',
   
-  xsfrHeaderName: 'X-XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
 
   headers: {
     common: {
