@@ -13,7 +13,7 @@ export function isFormData (val: any): val is FormData {
 }
 
 export function isURLSearchParams (val: any): val is URLSearchParams {
-  return typeof val !== undefined && val instanceof isURLSearchParams
+  return typeof val !== undefined && val instanceof URLSearchParams
 }
 
 export function extend<T, U> (to: T, from: U): T & U {
