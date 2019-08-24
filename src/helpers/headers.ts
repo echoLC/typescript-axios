@@ -1,9 +1,9 @@
 import { isPlainObject, deepMerge } from './utils'
 import { Method } from '../types'
 
-function normalizeHeaderName (headers: any, normalizeName: string): any {
+function normalizeHeaderName(headers: any, normalizeName: string): any {
   if (!headers) {
-    return
+    return headers
   }
 
   Object.keys(headers).forEach(name => {
@@ -14,7 +14,11 @@ function normalizeHeaderName (headers: any, normalizeName: string): any {
   })
 }
 
-export function processHeaders (headers: any, data: any): any {
+export function processHeaders(headers: any, data: any): any {
+  if (!headers) {
+    return headers
+  }
+
   normalizeHeaderName(headers, 'Content-Type')
 
   const headersContentType = headers['Content-Type']
@@ -28,7 +32,7 @@ export function processHeaders (headers: any, data: any): any {
   return headers
 }
 
-export function parseHeaders (headers: string): any {
+export function parseHeaders(headers: string): any {
   const parsed = Object.create(null)
 
   if (!headers) {
@@ -36,7 +40,7 @@ export function parseHeaders (headers: string): any {
   }
 
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
 
     key = key.trim().toLowerCase()
 
@@ -44,17 +48,13 @@ export function parseHeaders (headers: string): any {
       return
     }
 
-    if (val) {
-      val = val.trim()
-    }
-
-    parsed[key] = val
+    parsed[key] = vals.join(':').trim()
   })
 
   return parsed
 }
 
-export function flattenHeaders (headers: any, method: Method): any {
+export function flattenHeaders(headers: any, method: Method): any {
   if (!headers) {
     return headers
   }
@@ -69,4 +69,3 @@ export function flattenHeaders (headers: any, method: Method): any {
 
   return headers
 }
-

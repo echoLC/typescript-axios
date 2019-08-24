@@ -1,15 +1,11 @@
-import {
-  isPlainObject,
-  isDate,
-  isURLSearchParams
-} from './utils'
+import { isPlainObject, isDate, isURLSearchParams } from './utils'
 
 interface URLOrigin {
   protocol: string
   host: string
 }
 
-function encode (val: string): string {
+function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
     .replace(/%3A/gi, ':')
@@ -20,15 +16,19 @@ function encode (val: string): string {
     .replace(/%5D/gi, ']')
 }
 
-export function isAbsoluteURL (url: string): boolean {
-  return /^([a-z][a-z\d\+\.]*:)?\/\//i.test(url)
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
 }
 
-export function combineURL (baseURL: string, relativeURL?: string): string {
-  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL 
+export function combineURL(baseURL: string, relativeURL?: string): string {
+  return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
 }
 
-export function buildURL (url: string, params: any, paramsSerializer?: (params: any) => string): string {
+export function buildURL(
+  url: string,
+  params?: any,
+  paramsSerializer?: (params: any) => string
+): string {
   if (!params) {
     return url
   }
@@ -43,19 +43,20 @@ export function buildURL (url: string, params: any, paramsSerializer?: (params: 
   } else {
     Object.keys(params).forEach(key => {
       const val = params[key]
-  
+
       if (val === null || val === undefined) {
         return
       }
-  
+
       let values = []
-  
+
       if (Array.isArray(val)) {
         values = val
+        key += '[]'
       } else {
         values = [val]
       }
-  
+
       values.forEach(val => {
         if (isDate(val)) {
           val = val.toISOString()
@@ -65,7 +66,7 @@ export function buildURL (url: string, params: any, paramsSerializer?: (params: 
         parts.push(`${encode(key)}=${encode(val)}`)
       })
     })
-  
+
     serializeParam = parts.join('&')
   }
 
@@ -76,7 +77,7 @@ export function buildURL (url: string, params: any, paramsSerializer?: (params: 
       url = url.slice(0, markIndex)
     }
 
-    const operator = (url.indexOf('?') !== -1) ? '&' : '?'
+    const operator = url.indexOf('?') !== -1 ? '&' : '?'
 
     url += `${operator}${serializeParam}`
   }
@@ -87,19 +88,17 @@ export function buildURL (url: string, params: any, paramsSerializer?: (params: 
 const urlParsingNode = document.createElement('a')
 const currentOrigin = resolveURL(window.location.href)
 
-export function isURLSameOrigin (requestUrl: string): boolean {
+export function isURLSameOrigin(requestUrl: string): boolean {
   const requestOrigin = resolveURL(requestUrl)
-  return requestOrigin.protocol === currentOrigin.protocol && requestOrigin.host === currentOrigin
-    .host
+  return (
+    requestOrigin.protocol === currentOrigin.protocol && requestOrigin.host === currentOrigin.host
+  )
 }
 
-function resolveURL (url: string): URLOrigin {
+function resolveURL(url: string): URLOrigin {
   urlParsingNode.setAttribute('href', url)
 
-  const {
-    protocol,
-    host
-  } = urlParsingNode
+  const { protocol, host } = urlParsingNode
   return {
     protocol,
     host
