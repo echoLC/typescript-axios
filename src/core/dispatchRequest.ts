@@ -4,22 +4,29 @@ import { flattenHeaders } from '../helpers/headers'
 import xhr from './xhr'
 import transform from './transform'
 
-function axios (config: AxiosRequestConfig): AxiosPromise {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  
-  return xhr(config).then((res) => {
-    res.data = transformResponseData(res)
-    return res
-  })
+
+  return xhr(config).then(
+    res => {
+      return transformResponseData(res)
+    },
+    err => {
+      if (err && err.response) {
+        err.response = transformResponseData(err.response)
+      }
+      return Promise.reject(err)
+    }
+  )
 }
 
-function processConfig (config: AxiosRequestConfig): void {
+function processConfig(config: AxiosRequestConfig): void {
   config.url = transformURL(config)
   config.data = transform(config.data, config.headers, config.transformRequest)
   config.headers = flattenHeaders(config.headers, config.method!)
 }
 
-export function transformURL (config: AxiosRequestConfig): string {
+export function transformURL(config: AxiosRequestConfig): string {
   let { url, params, paramsSerializer, baseURL } = config
 
   if (baseURL && !isAbsoluteURL(url!)) {
@@ -29,8 +36,9 @@ export function transformURL (config: AxiosRequestConfig): string {
   return buildURL(url!, params, paramsSerializer)
 }
 
-function transformResponseData (res: AxiosResponse): any {
-  return transform(res.data, res.headers, res.config.transformResponse)
+function transformResponseData(res: AxiosResponse): any {
+  res.data = transform(res.data, res.headers, res.config.transformResponse)
+  return res
 }
 
 export default axios

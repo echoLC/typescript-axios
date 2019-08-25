@@ -75,7 +75,14 @@
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/test/boot.ts"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "warnOnly": true
+        }
+      }
+    }
   },
   "prettier": {
     "semi": false,
@@ -92,6 +99,7 @@
     "@types/jest": "^24.0.13",
     "@types/node": "^10.11.0",
     "@types/qs": "^6.5.3",
+    "@types/jasmine-ajax": "^3.1.39",
     "body-parser": "^1.18.3",
     "colors": "^1.3.2",
     "commitizen": "^3.0.0",
@@ -129,15 +137,15 @@
     "typescript": "^3.0.3",
     "webpack": "^4.28.4",
     "webpack-dev-middleware": "^3.5.0",
-    "webpack-hot-middleware": "^2.24.3"
-  },
-  "dependencies": {
+    "webpack-hot-middleware": "^2.24.3",
     "@types/nprogress": "^0.2.0",
     "atob": "^2.1.2",
     "connect-multiparty": "^2.2.0",
     "cookie-parser": "^1.4.4",
     "css-loader": "^3.1.0",
     "nprogress": "^0.2.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "jasmine-ajax": "^4.0.0",
+    "jasmine-core": "^3.4.0"
   }
 }
