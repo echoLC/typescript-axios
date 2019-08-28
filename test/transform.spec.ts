@@ -49,7 +49,7 @@ describe('transform', () => {
     }
 
     axios.post('/foo', data, {
-      transformRequest(data) {
+      transformRequest(data: any) {
         return data
       }
     })
@@ -65,8 +65,8 @@ describe('transform', () => {
     }
 
     axios.post('/foo', data, {
-      transformRequest: (axios.defaults.tranformRequest as AxiosTransformer[]).concat(function(
-        data
+      transformRequest: (axios.defaults.transformRequest as AxiosTransformer[]).concat(function(
+        data: any
       ) {
         return data.replace('bar', 'baz')
       })
@@ -81,7 +81,7 @@ describe('transform', () => {
     const token = Math.floor(Math.random() * Math.pow(2, 64)).toString(36)
 
     axios('/foo', {
-      transformRequest: (data, headers) => {
+      transformRequest: (data: any, headers: any) => {
         headers['X-Authorization'] = token
         return data
       }
