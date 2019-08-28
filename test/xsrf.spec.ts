@@ -16,7 +16,7 @@ describe('xsfr', () => {
     axios('/foo')
 
     return getAjaxRequest().then(request => {
-      expect(request.requestHeaders[axios.defaults.xsrfHeaderName]).toBeUndefined()
+      expect(request.requestHeaders[axios.defaults.xsrfHeaderName!]).toBeUndefined()
     })
   })
 
@@ -25,7 +25,7 @@ describe('xsfr', () => {
 
     axios('/foo')
     return getAjaxRequest().then(request => {
-      expect(request.requestHeaders[axios.defaults.xsrfHeaderName]).toBe('12345')
+      expect(request.requestHeaders[axios.defaults.xsrfHeaderName!]).toBe('12345')
     })
   })
 
@@ -34,7 +34,7 @@ describe('xsfr', () => {
 
     axios('http://example.com/')
     return getAjaxRequest().then(request => {
-      expect(request.requestHeaders[axios.defaults.xsrfHeaderName]).toBeUndefined()
+      expect(request.requestHeaders[axios.defaults.xsrfHeaderName!]).toBeUndefined()
     })
   })
 
@@ -46,7 +46,7 @@ describe('xsfr', () => {
     })
 
     return getAjaxRequest().then(request => {
-      expect(request.requestHeaders[axios.defaults.xsrfHeaderName]).toBe('12345')
+      expect(request.requestHeaders[axios.defaults.xsrfHeaderName!]).toBe('12345')
     })
   })
 })
