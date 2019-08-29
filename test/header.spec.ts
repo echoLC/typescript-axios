@@ -5,9 +5,9 @@ function testHeaderValue(headers: any, key: string, val?: string): void {
   let found = false
 
   for (let k in headers) {
-    if (key.toLowerCase() === k.toLowerCase()) {
+    if (k.toLowerCase() === key.toLowerCase()) {
       found = true
-      expect(headers[key]).toBe(val)
+      expect(headers[k]).toBe(val)
       break
     }
   }
@@ -16,7 +16,7 @@ function testHeaderValue(headers: any, key: string, val?: string): void {
     if (typeof val === 'undefined') {
       expect(headers.hasOwnProperty(key)).toBeFalsy()
     } else {
-      throw new Error(key + 'was not found in headers')
+      throw new Error(key + ' was not found in headers')
     }
   }
 }
@@ -45,7 +45,7 @@ describe('headers', () => {
   })
 
   test('should add extra headers for post', () => {
-    axios.post('/foo', 'foo=bar')
+    axios.post('/foo', 'fizz=buzz')
 
     return getAjaxRequest().then(request => {
       testHeaderValue(request.requestHeaders, 'Content-Type', 'application/x-www-form-urlencoded')
@@ -53,7 +53,10 @@ describe('headers', () => {
   })
 
   test('should use application/json when posting an object', () => {
-    axios.post('/foo', { a: 123 })
+    axios.post('/foo/bar', {
+      firstName: 'foo',
+      lastName: 'bar'
+    })
 
     return getAjaxRequest().then(request => {
       testHeaderValue(request.requestHeaders, 'Content-Type', 'application/json;charset=utf-8')
@@ -68,7 +71,7 @@ describe('headers', () => {
     })
   })
 
-  test('should preserve content-type if data is false', () => {
+  it('should preserve content-type if data is false', () => {
     axios.post('/foo', false)
 
     return getAjaxRequest().then(request => {

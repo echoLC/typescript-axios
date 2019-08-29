@@ -3,9 +3,8 @@ import { Method } from '../types'
 
 function normalizeHeaderName(headers: any, normalizeName: string): any {
   if (!headers) {
-    return headers
+    return
   }
-
   Object.keys(headers).forEach(name => {
     if (name !== normalizeName && name.toUpperCase() === normalizeName.toUpperCase()) {
       headers[normalizeName] = headers[name]
@@ -15,16 +14,10 @@ function normalizeHeaderName(headers: any, normalizeName: string): any {
 }
 
 export function processHeaders(headers: any, data: any): any {
-  if (!headers) {
-    return headers
-  }
-
   normalizeHeaderName(headers, 'Content-Type')
 
-  const headersContentType = headers['Content-Type']
-
   if (isPlainObject(data)) {
-    if (headers && !headersContentType) {
+    if (headers && !headers['Content-Type']) {
       headers['Content-Type'] = 'application/json;charset=utf-8'
     }
   }

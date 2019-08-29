@@ -96,7 +96,6 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     function processRequestHeaders(): void {
       if ((withCredentials || isURLSameOrigin(url!)) && xsrfCookieName) {
         const xsrfValue = cookie.read(xsrfCookieName)
-        console.log(xsrfValue)
         if (xsrfValue && xsrfHeaderName) {
           request.setRequestHeader(xsrfHeaderName, xsrfValue)
         }

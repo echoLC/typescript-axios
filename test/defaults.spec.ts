@@ -2,7 +2,7 @@ import axios, { AxiosTransformer } from '../src/index'
 import { getAjaxRequest } from './helper'
 import { deepMerge } from '../src/helpers/utils'
 
-describe.only('defaults', () => {
+describe('defaults', () => {
   beforeEach(() => {
     jasmine.Ajax.install()
   })
@@ -11,23 +11,24 @@ describe.only('defaults', () => {
     jasmine.Ajax.uninstall()
   })
 
-  const defaultTransformRequest = (axios.defaults.transformRequest as AxiosTransformer[])[0]
-  const defaultTransformResponse = (axios.defaults.transformResponse as AxiosTransformer[])[0]
-
   test('should transform request json', () => {
-    expect(defaultTransformRequest({ foo: 'bar' })).toBe('{"foo":"bar"}')
+    expect((axios.defaults.transformRequest as AxiosTransformer[])[0]({ foo: 'bar' })).toBe(
+      '{"foo":"bar"}'
+    )
   })
 
   test('should do nothing to request string', () => {
-    expect(defaultTransformRequest('foo=bar')).toBe('foo=bar')
+    expect((axios.defaults.transformRequest as AxiosTransformer[])[0]('foo=bar')).toBe('foo=bar')
   })
 
   test('should tranform response json', () => {
-    expect(defaultTransformResponse('{"foo":"bar"}')).toEqual({ foo: 'bar' })
+    expect((axios.defaults.transformResponse as AxiosTransformer[])[0]('{"foo":"bar"}')).toEqual({
+      foo: 'bar'
+    })
   })
 
   test('should do nothing to response string', () => {
-    expect(defaultTransformResponse('foo=bar')).toBe('foo=bar')
+    expect((axios.defaults.transformResponse as AxiosTransformer[])[0]('foo=bar')).toBe('foo=bar')
   })
 
   test('should use global defaults config', () => {
@@ -45,6 +46,7 @@ describe.only('defaults', () => {
     axios('/foo')
     return getAjaxRequest().then(request => {
       expect(request.url).toBe('http://example.com/foo')
+      delete axios.defaults.baseURL
     })
   })
 
@@ -58,7 +60,7 @@ describe.only('defaults', () => {
     })
   })
 
-  test.only('should use default config for custom insatnce', () => {
+  test('should use default config for custom insatnce', () => {
     const instance = axios.create({
       xsrfCookieName: 'CUSTOM-XSRF-TOKEN',
       xsrfHeaderName: 'X-CUSTOM-XSRF-TOKEN'

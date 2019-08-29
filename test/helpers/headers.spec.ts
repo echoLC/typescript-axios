@@ -1,6 +1,6 @@
 import { parseHeaders, processHeaders, flattenHeaders } from '../../src/helpers/headers'
 
-describe('heplers: header', () => {
+describe('helpers:header', () => {
   describe('parseHeaders', () => {
     test('should parse headers', () => {
       const parsed = parseHeaders(
@@ -30,7 +30,6 @@ describe('heplers: header', () => {
         'conTenT-Type': 'foo/bar',
         'Content-length': 1024
       }
-
       processHeaders(headers, {})
       expect(headers['Content-Type']).toBe('foo/bar')
       expect(headers['conTenT-Type']).toBeUndefined()
@@ -40,19 +39,18 @@ describe('heplers: header', () => {
     test('should set Content-Type if not set and data is PlainObject', () => {
       const headers: any = {}
       processHeaders(headers, { a: 1 })
-
       expect(headers['Content-Type']).toBe('application/json;charset=utf-8')
     })
 
     test('should not set Content-Type if not set and data is not PlainObject', () => {
       const headers: any = {}
-      processHeaders(headers, new URLSearchParams('a=1'))
+      processHeaders(headers, new URLSearchParams('a=b'))
       expect(headers['Content-Type']).toBeUndefined()
     })
 
     test('should do nothing if headers is undefined or null', () => {
-      expect(processHeaders(null, { a: 1 })).toBeNull()
-      expect(processHeaders(undefined, { a: 1 })).toBeUndefined()
+      expect(processHeaders(undefined, {})).toBeUndefined()
+      expect(processHeaders(null, {})).toBeNull()
     })
   })
 
@@ -73,8 +71,8 @@ describe('heplers: header', () => {
 
       expect(flattenHeaders(headers, 'get')).toEqual({
         Accept: 'application/json',
-        'X-GET-HEADER': 'getHeaderValue',
-        'X-COMMON-HEADER': 'commonHeaderValue'
+        'X-COMMON-HEADER': 'commonHeaderValue',
+        'X-GET-HEADER': 'getHeaderValue'
       })
     })
 

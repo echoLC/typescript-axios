@@ -4,7 +4,7 @@ import mergeConfig from '../src/core/mergeConfig'
 describe('mergeConfig', () => {
   const defaults = axios.defaults
 
-  test('should accept undefind for second argument', () => {
+  test('should accept undefined for second argument', () => {
     expect(mergeConfig(defaults, undefined)).toEqual(defaults)
   })
 
@@ -20,11 +20,10 @@ describe('mergeConfig', () => {
 
   test('should allow setting request options', () => {
     const config = {
-      url: 'url',
-      params: 'params',
-      data: { foo: 'bar' }
+      url: '__sample url__',
+      params: '__sample params__',
+      data: { foo: true }
     }
-
     const merged = mergeConfig(defaults, config)
     expect(merged.url).toBe(config.url)
     expect(merged.params).toBe(config.params)
@@ -33,9 +32,9 @@ describe('mergeConfig', () => {
 
   test('should not inherit request options', () => {
     const localDefaults = {
-      url: 'url',
-      params: 'params',
-      data: { foo: 'bar' }
+      url: '__sample url__',
+      params: '__sample params__',
+      data: { foo: true }
     }
     const merged = mergeConfig(localDefaults, {})
     expect(merged.url).toBeUndefined()
@@ -43,30 +42,38 @@ describe('mergeConfig', () => {
     expect(merged.data).toBeUndefined()
   })
 
-  test('should return defaults if pass config2 with undefined', () => {
-    expect(mergeConfig({ headers: 'x-mock-header' }, undefined)).toEqual({
+  test('should return default headers if pass config2 with undefined', () => {
+    expect(
+      mergeConfig(
+        {
+          headers: 'x-mock-header'
+        },
+        undefined
+      )
+    ).toEqual({
       headers: 'x-mock-header'
     })
   })
 
-  test('should merge auth, headers width defaults', () => {
+  test('should merge auth, headers with defaults', () => {
     expect(
       mergeConfig(
-        { auth: undefined },
+        {
+          auth: undefined
+        },
         {
           auth: {
-            username: 'username',
-            password: 'password'
+            username: 'foo',
+            password: 'test'
           }
         }
       )
     ).toEqual({
       auth: {
-        username: 'username',
-        password: 'password'
+        username: 'foo',
+        password: 'test'
       }
     })
-
     expect(
       mergeConfig(
         {
@@ -77,15 +84,15 @@ describe('mergeConfig', () => {
         },
         {
           auth: {
-            username: 'foo',
-            password: 'test password'
+            username: 'baz',
+            password: 'foobar'
           }
         }
       )
     ).toEqual({
       auth: {
-        username: 'foo',
-        password: 'test password'
+        username: 'baz',
+        password: 'foobar'
       }
     })
   })
@@ -111,8 +118,8 @@ describe('mergeConfig', () => {
 
   test('should allow setting other options', () => {
     const merged = mergeConfig(defaults, {
-      timeout: 2000
+      timeout: 123
     })
-    expect(merged.timeout).toBe(2000)
+    expect(merged.timeout).toBe(123)
   })
 })
